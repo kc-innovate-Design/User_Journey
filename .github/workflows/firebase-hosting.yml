@@ -22,9 +22,6 @@ jobs:
         run: npm run build
 
       - name: Deploy to Firebase
-        uses: FirebaseExtended/action-hosting-deploy@v0
-        with:
-          repoToken: '${{ secrets.GITHUB_TOKEN }}'
-          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT }}'
-          channelId: live
-          projectId: user-journey-65d76
+        run: npx firebase-tools deploy --only hosting --project user-journey-65d76
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
