@@ -5,6 +5,7 @@ export interface JourneyItem {
   id: string;
   type: ItemType;
   content: string;
+  isNew?: boolean;
 }
 
 export interface ColumnData {
@@ -17,4 +18,11 @@ export interface MapData {
   title: string;
   current: ColumnData;
   future: ColumnData;
+}
+
+export interface ProjectMeta {
+  id: string;
+  title: string;
+  createdAt: number;
+  updatedAt: number;
 }
