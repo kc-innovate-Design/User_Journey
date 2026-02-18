@@ -1,0 +1,26 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Helper: check if the user's email belongs to an allowed domain
+    function isAllowedDomain() {
+      return request.auth != null && (
+        request.auth.token.email.matches('.*@innovate-design\\.co\\.uk$') ||
+        request.auth.token.email.matches('.*@innovate-design\\.com$') ||
+        request.auth.token.email.matches('.*@logic-lab\\.ai$')
+      );
+    }
+
+    // Users can only access their own data, and must be from an allowed domain
+    match /users/{userId}/{document=**} {
+      allow read, write: if request.auth != null
+                         && request.auth.uid == userId
+                         && isAllowedDomain();
+    }
+
+    // Deny everything else
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
